@@ -18,7 +18,7 @@ RECORD_SECONDS = 5
 OUTPUT_FILENAME="output.wav"
 
 
-RECEIVE_URL = "http://localhost:8000/speak"
+RECEIVE_URL = "http://localhost:8000/upload"
 SEND_URL = "http://localhost:8000/listen"
 
 
@@ -52,8 +52,10 @@ class TeddyBearRasp:
         self.send_audio_file(OUTPUT_FILENAME, SEND_URL)
 
 
-    async def speak(self, audio: UploadFile = File(...)):
-        audio_content = await audio.read()	
+    async def speak(self, audio_content):
+        with open('temp.wav', 'wb') as f:
+            f.write(audio_content)
+
         pygame.mixer.init()
         
         audio_stream = io.BytesIO(audio_content)

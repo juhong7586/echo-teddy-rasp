@@ -1,7 +1,7 @@
 
 from fastapi import FastAPI, File, UploadFile, Request
 from teddy_bear_rasp import TeddyBearRasp
-
+import shutil
 
 app = FastAPI()
 teddy_rasp = TeddyBearRasp()
@@ -11,12 +11,15 @@ async def home():
 	return {"Hello": "World"}
 
 	
-@app.post("/speak")
-async def upload(audio: UploadFile = File(...)):
-	await teddy_rasp.speak(audio)
+@app.post("/upload/")
+async def upload(file: UploadFile = File(...)):
+	with open(f"received_{file.filename}", "wb") as buffer: 
+		shutil.copyfileobj(file.file, buffer)
+		
 
 
 # for test
 @app.post("/listen")
 async def listen(audio: UploadFile = File(...)):
-	await teddy_rasp.speak(audio)
+	content = await audio.read()
+	await teddy_rasp.speak(content)
