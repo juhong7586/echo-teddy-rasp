@@ -12,8 +12,10 @@ import teddy_bear_rasp
 
 teddy_rasp = teddy_bear_rasp.TeddyBearRasp()
 
-BUTTON_LISTEN_PIN = 18
-LED_SEND = 27
+
+# BUTTON_LISTEN_PIN = 18 ##for rasp 3
+BUTTON_LISTEN_PIN = 17
+LED_SEND = 22
 
 button_listen = Button(BUTTON_LISTEN_PIN)
 led_send = LED(LED_SEND)
