@@ -4,10 +4,6 @@ from threading import Thread
 from signal import pause
 import signal
 import sys
-import requests
-import sounddevice as sd
-import scipy.io.wavfile as wav
-
 import teddy_bear_rasp 
 
 teddy_rasp = teddy_bear_rasp.TeddyBearRasp()
@@ -47,7 +43,7 @@ def signal_handler(sig, frame):
 
 if __name__ == "__main__":
 
-	try:
+	
 		signal.signal(signal.SIGINT, signal_handler)
 
 		button_listen.when_pressed = listen_and_send
@@ -55,8 +51,4 @@ if __name__ == "__main__":
 		pause()
 		
 	
-	except Exception as e:
-		print(f"An error occurred: {e}")
-		
-	finally:
-		end()
+	

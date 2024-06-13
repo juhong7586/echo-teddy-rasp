@@ -18,9 +18,11 @@ RECORD_SECONDS = 5
 OUTPUT_FILENAME="output.wav"
 
 
-RECEIVE_URL = "http://localhost:8000/speak"
-SEND_URL = "http://localhost:8000/listen"
+RECEIVE_URL = "http:/43.203.46.148:8000/speak"
+SEND_URL = "http://43.203.46.148:8000/upload"
 
+# RECEIVE_URL = "http:/0.0.0.0:8000/speak"
+# SEND_URL = "http://0.0.0.0:8000/upload"
 
 
 # TeddyBearRasp Class
@@ -31,6 +33,7 @@ class TeddyBearRasp:
         with open(filename, 'rb') as f:
             files = {'audio': f}
             response = requests.post(url, files=files)
+            print(response.text)
             print("Send complete!")
         
 
@@ -50,16 +53,20 @@ class TeddyBearRasp:
         wav.write(OUTPUT_FILENAME, RATE, recording)
         
         self.send_audio_file(OUTPUT_FILENAME, SEND_URL)
+    
 
 
-    async def speak(self, audio: UploadFile = File(...)):
-        audio_content = await audio.read()	
-        pygame.mixer.init()
-        
-        audio_stream = io.BytesIO(audio_content)
-        
-        pygame.mixer.music.load(audio_stream, "wav")
-        pygame.mixer.music.play()
+
+    async def speak(self, audio_content):
+            with open('temp.wav', 'wb') as f:
+                f.write(audio_content)
+
+            pygame.mixer.init()
+            
+            audio_stream = io.BytesIO(audio_content)
+            
+            pygame.mixer.music.load(audio_stream, "wav")
+            pygame.mixer.music.play()
 
 
 
